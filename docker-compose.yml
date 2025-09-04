@@ -7,9 +7,6 @@ services:
       dockerfile: Docker/DOCKERFILE.http-be
     ports:
       - "8000:8000"
-    depends_on:
-      - postgres
-
   ws:
     build:
       context: .
