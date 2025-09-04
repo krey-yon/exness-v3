@@ -1,19 +1,53 @@
-version: "3"
-
-volumes:
-  database:
-    driver: local
+version: "3.9"
 
 services:
-  mysql:
-    platform: linux/amd64
-    image: mysql:8.0.32
-    container_name: turborepo_mysql
-    restart: always
+  backend:
+    build:
+      context: .
+      dockerfile: Docker/DOCKERFILE.http-be
     ports:
-      - 3306:3306
+      - "8000:8000"
+    depends_on:
+      - postgres
+
+  ws:
+    build:
+      context: .
+      dockerfile: Docker/DOCKERFILE.ws
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Docker/DOCKERFILE.web
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres
+
+  timescaledb:
+    image: timescale/timescaledb-ha:pg17
+    container_name: timescaledb
+    restart: unless-stopped
     environment:
-      MYSQL_DATABASE: turborepo
-      MYSQL_ALLOW_EMPTY_PASSWORD: 1
+      POSTGRES_PASSWORD: "mysecretpassword"
+      PGDATA: /var/lib/postgresql/data
+    ports:
+      - "5432:5432"
     volumes:
-      - database:/var/lib/mysql
+      - /Users/vikas/docker_data/timescale_data:/var/lib/postgresql/data
+
+  postgres:
+    image: postgres:17
+    container_name: postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_PASSWORD: "mysecretpassword"
+      PGDATA: /var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+    volumes:
+      - /Users/vikas/docker_data/postgres_data:/var/lib/postgresql/data

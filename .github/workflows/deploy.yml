@@ -1,26 +1,26 @@
-# name: deploy to vm
-# on:
-#   push:
-#     branches:
-#       - main
+name: deploy to vm
+on:
+  push:
+    branches:
+      - main
 
-# jobs:
-#   deploy:
-#     name: push to vm
-#     runs-on: ubuntu-latest
+jobs:
+  deploy:
+    name: push to vm
+    runs-on: ubuntu-latest
 
-#     steps:
-#       - name: checkout the code
-#         uses: actions/checkout@v2
+    steps:
+      - name: checkout the code
+        uses: actions/checkout@v2
 
-#       - name: executing remote ssh commands using password
-#         uses: appleboy/ssh-action@v1.2.0
-#         with:
-#           host: 35.244.41.73
-#           username: root
-#           key: ${{secrets.PRIVATE_KEY}}
-#           port: 22
-#           script: |
-#             cd /root/vikas_projects/
-#             chmod +x deploy.sh
-#             ./deploy.sh
+      - name: executing remote ssh commands using password
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{secrets.HOST}}
+          username: ${{secrets.USER}}
+          key: ${{secrets.PRIVATE_KEY}}
+          port: 22
+          script: |
+            cd /home/kushwaha.k.vikas/vikas_projects/exness-v3
+            chmod +x deploy.sh
+            ./deploy.sh
