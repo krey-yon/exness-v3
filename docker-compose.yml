@@ -38,7 +38,7 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - /Users/vikas/docker_data/timescale_data:/var/lib/postgresql/data
+      - /home/kushwaha.k.vikas/docker_data/timescale_data:/var/lib/postgresql/data
 
   postgres:
     image: postgres:17
@@ -50,4 +50,4 @@ services:
     ports:
       - "5433:5432"
     volumes:
-      - /Users/vikas/docker_data/postgres_data:/var/lib/postgresql/data
+      - /home/kushwaha.k.vikas/docker_data/postgres_data:/var/lib/postgresql/data
